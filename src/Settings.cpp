@@ -5,8 +5,8 @@
 Settings::Settings(unsigned int seed):
   _update(true),
   _scale(0.005f),
-  _octave(2),
-  _lacunarity(2.f),
+  _octave(8),
+  _lacunarity(1.6f),
   _seed(seed)
 {
   std::srand(seed);

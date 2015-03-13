@@ -75,14 +75,12 @@ void	Fdf::_updateLines()
 void	Fdf::_generateHeightMap()
 {
   float		p;
-  float		scale = 0.005f;
-  unsigned int	octave = 3;
 
   _hmap.clear();
   for (unsigned int x = 0; x < _sx; ++x)
     for (unsigned int y = 0; y < _sy; ++y)
       {
-	p = fbm_2d(octave, 2.0f, 0.5f, scale, x, y);
+	p = fbm_2d(_set.getOctave(), _set.getLacunarity(), 0.5f, _set.getScale(), x, y);
 	_hmap.push_back(p * 200.f);
       }
 }
