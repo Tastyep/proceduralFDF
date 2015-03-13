@@ -4,10 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-extern "C"
-{
-  #include "libNoise.h"
-}
+#include "Settings.hpp"
 
 class Fdf
 {
@@ -32,6 +29,7 @@ private:
   float			_scale;
   std::vector<float>	_hmap;
   std::vector<sf::VertexArray>	_lines;
+  Settings		_set;
 };
 
 #endif /* _FDF_H_ */

@@ -15,7 +15,8 @@ LIBDIR 	= lib/
 LIBNAME = libNoise.a
 
 SRCS	= main.cpp \
-	  fdf.cpp
+	  fdf.cpp \
+	  Settings.cpp
 
 OBJS	= $(addprefix $(OBJDIR), $(SRCS:.cpp=.o))
 
