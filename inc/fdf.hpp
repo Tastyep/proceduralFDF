@@ -13,15 +13,17 @@ class Fdf
 {
 public:
   Fdf(unsigned int seed,
-      unsigned int sx = 200,
-      unsigned int sy = 200);
+      unsigned int sx = 300,
+      unsigned int sy = 300);
   ~Fdf();
 
   void	run();
 
 private:
-  void	_generateHeightMap();
-  void	_updateLines();
+  void		_generateHeightMap();
+  void		_updateLines();
+  sf::Vector2f	_calcDrawSize(const sf::Vector2u &screenSize,
+			      const sf::Vector2f &pad) const;
 
 private:
   sf::RenderWindow	_window;

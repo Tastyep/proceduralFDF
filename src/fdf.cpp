@@ -4,7 +4,7 @@
 Fdf::Fdf(unsigned int seed, unsigned int sx, unsigned int sy) :
   _window(sf::VideoMode(1600, 900), "Procedural Fdf"),
   _sx(sx), _sy(sy),
-  _scale(0.5f),
+  _scale(0.55f),
   _lines(sx + sy)
 {
   setSeed(seed);
@@ -54,6 +54,7 @@ void	Fdf::_updateLines()
   sf::Vector2u	size = _window.getSize();
   sf::Vector2f	pad(size.x / _sx, size.y / _sy);
   float		half = _scale / 2.f;
+  sf::Vector2f	freeSpace = _calcDrawSize(size, pad);
 
   for (unsigned int y = 0; y < _sy; ++y)
     {
@@ -64,8 +65,8 @@ void	Fdf::_updateLines()
 	  float	ypad = y * pad.y;
 	  float xpad = x * pad.x;
 
-	  vertex.position.x = _scale * xpad - _scale * ypad + size.x / 2.75f;
-	  vertex.position.y = -_hmap[idx] * (_scale + 0.5f) + half * xpad + half * ypad + size.y / 5.f;
+	  vertex.position.x = _scale * xpad - _scale * ypad + freeSpace.x;
+	  vertex.position.y = -_hmap[idx] * (_scale + 0.5f) + half * xpad + half * ypad + freeSpace.y;
 	  _lines[_sy + x][y].position = vertex.position;
 	  ++idx;
 	}
@@ -84,4 +85,25 @@ void	Fdf::_generateHeightMap()
 	p = fbm_2d(octave, 2.f, 0.5f, scale, x, y);
 	_hmap.push_back(p * 200.f);
       }
+}
+
+sf::Vector2f	Fdf::_calcDrawSize(const sf::Vector2u &screenSize,
+				   const sf::Vector2f &pad) const
+{
+  sf::FloatRect	pos;
+  float		half = _scale / 2.f;
+
+  // last of frist, first of last
+  // _scale * xpad - _scale * ypad
+  // -_hmap[idx] * (_scale + 0.5f) + half * xpad + half * ypad;
+
+  pos.left = _scale - _scale * (static_cast<int>(_sy) - 1) * pad.y;
+  pos.width = _scale * (static_cast<int>(_sx) - 1) * pad.x - _scale;
+  pos.top = -_hmap[0] * (_scale + 0.5);
+  pos.height = -_hmap[static_cast<int>(_sy * _sx) - 1] * (_scale + 0.5f) +
+    half * (static_cast<int>(_sx) - 1) * pad.x +
+    half * (static_cast<int>(_sy) - 1) * pad.y;
+
+  return sf::Vector2f(screenSize.x - (pos.width - std::abs(pos.left)),
+		      screenSize.y - (pos.height - std::abs(pos.top))) / 2.f;
 }
