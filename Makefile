@@ -22,7 +22,7 @@ OBJS	= $(addprefix $(OBJDIR), $(SRCS:.cpp=.o))
 
 INCCOMP	= -I$(INCDIR) -I$(LIBDIR)
 
-CXXFLAGS = -O2 -march=native -std=c++11
+CXXFLAGS = -O2 -march=native -std=c++1y
 
 LDFLAGS	= -lsfml-graphics -lsfml-window -lsfml-system -L$(LIBDIR) -lNoise
 

@@ -6,6 +6,20 @@
 
 #include "Settings.hpp"
 
+struct	s_color
+{
+  sf::Color	c;
+  int		min;
+  int		max;
+
+  s_color(const sf::Color &color,
+	  unsigned int mi,
+	  unsigned int ma) :
+    c(color), min(mi), max(ma)
+  {
+  }
+};
+
 class Fdf
 {
 public:
@@ -21,6 +35,7 @@ private:
   void		_updateLines();
   sf::Vector2f	_calcDrawSize(const sf::Vector2u &screenSize,
 			      const sf::Vector2f &pad) const;
+  void		_colorisation(auto &vertex, float z);
 
 private:
   sf::RenderWindow	_window;
@@ -29,6 +44,7 @@ private:
   float			_scale;
   std::vector<float>	_hmap;
   std::vector<sf::VertexArray>	_lines;
+  std::vector<s_color>	_colors;
   Settings		_set;
 };
 

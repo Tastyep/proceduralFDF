@@ -1,4 +1,5 @@
 #include <iostream>
+#include <complex>
 #include "fdf.hpp"
 
 Fdf::Fdf(unsigned int seed, unsigned int sx, unsigned int sy) :
@@ -15,6 +16,11 @@ Fdf::Fdf(unsigned int seed, unsigned int sx, unsigned int sy) :
     _lines[y].resize(sx);
   for (unsigned int x = 0; x < sx; ++x)
     _lines[sy + x].resize(sy);
+  _colors.push_back(s_color(sf::Color(114, 158, 196), 0, 0));
+  _colors.push_back(s_color(sf::Color(224, 192, 123), 0, 10));
+  _colors.push_back(s_color(sf::Color(133, 158, 81), 10, 80));
+  _colors.push_back(s_color(sf::Color(61, 42, 15), 80, 140));
+  _colors.push_back(s_color(sf::Color(255, 255, 255), 140, 140));
 }
 
 Fdf::~Fdf()
@@ -41,6 +47,8 @@ void	Fdf::run()
 	  _generateHeightMap();
 	  _updateLines();
 	}
+      else if (_set.toRefresh())
+	_updateLines();
       for (auto &line : _lines)
 	_window.draw(line);
       _window.display();
@@ -63,10 +71,16 @@ void	Fdf::_updateLines()
 	  auto	&vertex = line[x];
 	  float	ypad = y * pad.y;
 	  float xpad = x * pad.x;
+	  float	z = _hmap[idx];
 
+	  if (_set.color())
+	    _colorisation(vertex, z);
+	  else
+	    vertex.color = sf::Color::White;
 	  vertex.position.x = _scale * xpad - _scale * ypad + freeSpace.x;
-	  vertex.position.y = -_hmap[idx] * (_scale + 0.5f) + half * xpad + half * ypad + freeSpace.y;
+	  vertex.position.y = -z * (_scale + 0.5f) + half * xpad + half * ypad + freeSpace.y;
 	  _lines[_sy + x][y].position = vertex.position;
+	  _lines[_sy + x][y].color = vertex.color;
 	  ++idx;
 	}
     }
@@ -81,7 +95,7 @@ void	Fdf::_generateHeightMap()
     for (unsigned int y = 0; y < _sy; ++y)
       {
 	p = fbm_2d(_set.getOctave(), _set.getLacunarity(), 0.5f, _set.getScale(), x, y);
-	_hmap.push_back(p * 200.f);
+	_hmap.push_back(p * 200.f + 50);
       }
 }
 
@@ -100,4 +114,35 @@ sf::Vector2f	Fdf::_calcDrawSize(const sf::Vector2u &screenSize,
 
   return sf::Vector2f(screenSize.x - (pos.width - std::abs(pos.left)),
 		      screenSize.y - (pos.height - std::abs(pos.top))) / 2.f;
+}
+
+void	Fdf::_colorisation(auto &vertex, float z)
+{
+  for (auto it = _colors.begin(); it != _colors.end(); ++it)
+    {
+      if (it == _colors.begin())
+	{
+	  if (z < it->max)
+	    {
+	      vertex.color = it->c;
+	      break ;
+	    }
+	}
+      else if (it + 1 == _colors.end())
+	{
+	  if (z > it->min)
+	    {
+	      vertex.color = it->c;
+	      break ;
+	    }
+	}
+      else
+	{
+	  if (z > it->min && z < it->max)
+	    {
+	      vertex.color = it->c;
+	      break ;
+	    }
+	}
+    }
 }

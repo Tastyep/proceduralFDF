@@ -16,12 +16,16 @@ public:
   void		handleEvent(const sf::Event &event);
 
   bool		toUpdate();
+  bool		toRefresh();
+  bool		color() const;
   float		getScale() const { return _scale; }
   int		getOctave() const { return _octave; }
   float		getLacunarity() const { return _lacunarity; }
 
 private:
   bool		_update;
+  bool		_refresh;
+  bool		_color;
   float		_scale;
   int		_octave;
   float		_lacunarity;
