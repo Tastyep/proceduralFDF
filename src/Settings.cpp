@@ -8,7 +8,7 @@ Settings::Settings(unsigned int seed):
   _color(false),
   _scale(0.005f),
   _octave(8),
-  _lacunarity(2.f),
+  _lacunarity(2.0f),
   _seed(seed)
 {
   std::srand(seed);

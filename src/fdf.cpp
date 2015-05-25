@@ -94,7 +94,7 @@ void	Fdf::_generateHeightMap()
   for (unsigned int x = 0; x < _sx; ++x)
     for (unsigned int y = 0; y < _sy; ++y)
       {
-	p = fbm_2d(_set.getOctave(), _set.getLacunarity(), 0.5f, _set.getScale(), x, y);
+	p = fbm_2d(_set.getOctave(), _set.getLacunarity(),0.5f, _set.getScale(), x, y);
 	_hmap.push_back(p * 200.f + 50);
       }
 }
@@ -116,7 +116,7 @@ sf::Vector2f	Fdf::_calcDrawSize(const sf::Vector2u &screenSize,
 		      screenSize.y - (pos.height - std::abs(pos.top))) / 2.f;
 }
 
-void	Fdf::_colorisation(auto &vertex, float z)
+void	Fdf::_colorisation(sf::Vertex &vertex, float z)
 {
   for (auto it = _colors.begin(); it != _colors.end(); ++it)
     {

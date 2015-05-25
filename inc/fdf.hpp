@@ -35,7 +35,7 @@ private:
   void		_updateLines();
   sf::Vector2f	_calcDrawSize(const sf::Vector2u &screenSize,
 			      const sf::Vector2f &pad) const;
-  void		_colorisation(auto &vertex, float z);
+  void		_colorisation(sf::Vertex &vertex, float z);
 
 private:
   sf::RenderWindow	_window;
