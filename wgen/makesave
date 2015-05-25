@@ -6,7 +6,7 @@ RM	= rm -f
 
 SRCDIR	= src/
 
-INCDIR	= inc/
+INCDIR	= include/
 
 OBJDIR	= obj/
 
@@ -32,7 +32,7 @@ dummy	:= 	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 $(OBJDIR)%.o:	$(SRCDIR)%.cpp
 	$(CC) $(CXXFLAGS) $(INCCOMP) -o $@ -c $<
 
-$(NAME):  libs $(OBJS)
+$(NAME):  $(OBJS)
 	$(CC) -o $(NAME) $(OBJS)  $(LDFLAGS) $(LIBFILES)/*.a
 
 libs:
